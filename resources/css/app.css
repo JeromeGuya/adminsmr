@@ -1,0 +1,125 @@
+    @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    html {
+        @apply scroll-smooth;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+
+    body {
+        @apply bg-[#fafafa] font-nunito;
+    }
+
+    body.dark {
+        @apply bg-[#060818];
+    }
+
+    /* Panel */
+    .panel {
+        @apply relative rounded-md bg-white p-5 shadow dark:bg-[#0e1726];
+    }
+
+    /* Navbar */
+    .navbar-sticky header,
+    .navbar-floating header {
+        @apply sticky top-0 z-20;
+    }
+    .navbar-floating header {
+        @apply bg-[#fafafa]/90 px-6 pt-4 dark:bg-[#060818]/90;
+    }
+    .navbar-floating header > div > div:first-child {
+        @apply rounded-md;
+    }
+    .horizontal .navbar-floating header > div > div:first-child {
+        @apply rounded-b-none;
+    }
+    .horizontal .navbar-floating header .horizontal-menu {
+        @apply rounded-b-md;
+    }
+
+    /* Sidebar */
+    .sidebar:hover .nav-item > a {
+        @apply w-auto;
+    }
+
+    .sidebar .nav-item > button,
+    .sidebar .nav-item > a {
+        @apply mb-1 flex w-full items-center justify-between overflow-hidden whitespace-nowrap rounded-md p-2.5 text-[#506690] hover:bg-[#000]/[0.08] hover:text-black dark:hover:bg-[#181f32] dark:hover:text-white-dark;
+    }
+    .sidebar .nav-item > button.active,
+    .sidebar .nav-item > a.active {
+        @apply bg-[#000]/[0.08] text-black dark:bg-[#181f32] dark:text-white-dark;
+    }
+
+    .sidebar .nav-item > button.active > div > span,
+    .sidebar .nav-item > a.active > div > span {
+        @apply dark:!text-white-dark;
+    }
+
+    .sidebar ul.sub-menu li button,
+    .sidebar ul.sub-menu li a {
+        @apply flex w-full items-center px-9 py-2.5 before:h-0.5 before:w-2 before:rounded before:bg-gray-300 hover:bg-gray-100
+hover:text-primary hover:before:!bg-primary ltr:before:mr-2 rtl:before:ml-2 dark:before:bg-gray-500 dark:hover:bg-gray-900 dark:hover:text-primary;
+    }
+    .sidebar ul.sub-menu li button.active,
+    .sidebar ul.sub-menu li a.active {
+        @apply text-primary before:bg-primary;
+    }
+
+    .sidebar .nav-item a div:first-child svg,
+    .sidebar .nav-item button div:first-child svg {
+        @apply h-5 w-5 text-black/50 dark:text-white/50;
+    }
+
+    .main-container .main-content {
+        @apply transition-all duration-300 lg:ltr:ml-[260px] lg:rtl:mr-[260px];
+    }
+
+
+
+    /* Vertical layouts */
+    .vertical.toggle-sidebar .horizontal-logo,
+    .vertical.toggle-sidebar .collapse-icon {
+        @apply flex;
+    }
+    .vertical.toggle-sidebar .main-container .main-content {
+        @apply ltr:ml-0 rtl:mr-0;
+    }
+    .vertical .sidebar {
+        @apply ltr:-left-[260px] rtl:-right-[260px] lg:ltr:left-0 lg:rtl:right-0;
+    }
+    .vertical.toggle-sidebar .sidebar {
+        @apply ltr:left-0 rtl:right-0 lg:ltr:-left-[260px] lg:rtl:-right-[260px];
+    }
+
+    /* Collapsible vertical layouts */
+
+
+
+    /* dropdown */
+    .dropdown {
+        @apply relative;
+    }
+    .dropdown > button {
+        @apply flex;
+    }
+    .dropdown ul {
+        @apply absolute z-10 mt-1 min-w-[120px] rounded bg-white p-0 py-2 text-black shadow dark:bg-[#1b2e4b] dark:text-white-dark;
+        /* @apply my-1 min-w-[120px] rounded bg-white p-0 py-2 shadow dark:bg-[#1b2e4b]; */
+    }
+    .dropdown ul li > a,
+    .dropdown ul li > button {
+        @apply flex items-center px-4 py-2 hover:bg-primary/10 hover:text-primary;
+    }
+
+    .dropdown ul li > button {
+        @apply w-full;
+    }
+
+
+}
