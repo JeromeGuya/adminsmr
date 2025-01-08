@@ -43,7 +43,7 @@
                             <p><span class="font-medium">Check-in Date:</span> {{ \Carbon\Carbon::parse($booking->check_in)->format('F d, Y') }}</p>
                             <p><span class="font-medium">Check-out Date:</span> {{ \Carbon\Carbon::parse($booking->check_out)->format('F d, Y') }}</p>
                             <p><span class="font-medium">Total Amount:</span> ₱{{ number_format($booking->total_amount, 2) }}</p>
-                            <p><span class="font-medium">Payment Amount:</span> ₱{{ number_format($booking->payment_amount, 2) }}</p>
+                            <p><span class="font-medium">Payment Amount:</span> ₱{{ number_format($booking->down_payment, 2) }}</p>
                             <p><span class="font-medium">Payment Method:</span> {{ $booking->payment_method }}</p>
                             <p><span class="font-medium">Payment Status:</span> {{ $booking->payment_status }}</p>
                             <p><span class="font-medium">Booking Status:</span> {{ $booking->booking_status }}</p>
@@ -62,7 +62,7 @@
 
                 <!-- Actions -->
                 <div class="mt-6 flex flex-wrap justify-end space-x-2">
-                    @if ($booking->booking_status !== 'Approved' || $booking->payment_status !== 'Fully Paid')
+                    @if ($booking->booking_status !== 'Success' || $booking->payment_status !== 'Fully Paid')
                         <!-- Approve Button -->
                         <button
                             data-modal-target="approveModal"

@@ -31,7 +31,7 @@
 
             <!-- Form -->
             <div class="overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
-                <form action="{{ route('employees.update', $employee->employee_id) }}" method="POST" id="editEmployeeForm" class="space-y-6 max-w-4xl mx-auto p-6">
+                <form action="{{ route('employees.update', $employee->id) }}" method="POST" id="editEmployeeForm" class="space-y-6 max-w-4xl mx-auto p-6">
                     @csrf
                     @method('PUT')
 

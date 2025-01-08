@@ -5,7 +5,7 @@
             <!-- Header Section -->
             <div class="flex flex-col sm:flex-row items-center justify-between mb-6">
                 <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4 sm:mb-0">
-                    Approved Bookings
+                    Booking Reports
                 </h1>
                 <!-- Link to View Report -->
                 <a href="{{ route('approvedBookingsReport') }}" class="btn bg-blue-500 text-white px-4 py-2 rounded">
@@ -29,6 +29,10 @@
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
                                 Booking ID
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                                Booking Date
                             </th>
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
@@ -59,10 +63,13 @@
                                     {{ $booking->booking_id }}
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
+                                    {{ $booking->created_at->format('Y-m-d') }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
                                     @if ($booking->room)
                                         Room: {{ $booking->room->room_type }}
                                     @elseif ($booking->pool)
-                                        Pool: {{ $booking->pool->pool_name }}
+                                        Pool: {{ $booking->pool->cottage_name }}
                                     @elseif ($booking->activity)
                                         Activity: {{ $booking->activity->activity_name }}
                                     @elseif ($booking->hall)
@@ -87,7 +94,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
                                         <span class="
-                                            @if ($booking->booking_status == 'Approved')
+                                            @if ($booking->booking_status == 'Success')
                                                 text-green-500
                                             @elseif ($booking->booking_status == 'Pending')
                                                 text-orange-500
@@ -99,6 +106,7 @@
                                 <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
                                     PHP {{ number_format($booking->total_amount, 2) }}
                                 </td>
+
                             </tr>
                         @endforeach
                         </tbody>

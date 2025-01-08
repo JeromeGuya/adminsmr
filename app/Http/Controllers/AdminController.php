@@ -7,33 +7,25 @@ use App\Models\Feedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Models\Announcement;
 
 class AdminController extends Controller
 {
     public function adminDashboard()
     {
-        $fullyPaidCount = Booking::where('payment_status', 'Fully Paid')
-            ->where('booking_status', 'Approved')
-            ->count();
+        $fullyPaidCount = Booking::where('payment_status', 'Fully Paid')->where('booking_status', 'Approved')->count();
 
         $pendingCount = Booking::where(function ($query) {
-            $query->where('payment_status', 'Fully Paid')
-                ->orWhere('payment_status', 'Partial');
+            $query->where('payment_status', 'Fully Paid')->orWhere('payment_status', 'Partial');
         })
             ->where('booking_status', 'Pending')
             ->count();
 
         // Retrieve the average rating and count of feedback
-        $averageRating = Feedback::selectRaw('AVG(CAST(rating AS FLOAT)) as avg_rating')
-            ->value('avg_rating');
+        $averageRating = Feedback::selectRaw('AVG(CAST(rating AS FLOAT)) as avg_rating')->value('avg_rating');
         $feedbackCount = Feedback::count();
 
-        return view('admin.admin_dashboard', compact(
-            'fullyPaidCount',
-            'pendingCount',
-            'averageRating',
-            'feedbackCount'
-        ));
+        return view('admin.admin_dashboard', compact('fullyPaidCount', 'pendingCount', 'averageRating', 'feedbackCount'));
     }
 
     public function store()
@@ -42,7 +34,6 @@ class AdminController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
 
         if (!Auth::guard('admin')->attempt($validate)) {
             throw ValidationException::withMessages([
@@ -53,7 +44,6 @@ class AdminController extends Controller
         request()->session()->regenerate();
 
         return redirect('/dashboard');
-
     }
 
     public function logout(Request $request)
@@ -69,6 +59,24 @@ class AdminController extends Controller
         return redirect('/');
     }
 
+    public function announcementIndex()
+    {
+        $announcements = Announcement::orderBy('date_posted', 'desc')->get();
+        return view('bookings.announcement', compact('announcements'));
+    }
 
+    public function announcementStore(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string',
+        ]);
 
+        Announcement::create([
+            'message' => $request->message,
+            'sender_name' => 'Ecolodge Admin', // Assuming user authentication is set up
+            'date_posted' => now(),
+        ]);
+
+        return redirect()->back()->with('success', 'Announcement added successfully.');
+    }
 }

@@ -42,7 +42,7 @@ class BookingController extends Controller
     public function roomBookingApprove($id)
     {
         $booking = Booking::findOrFail($id);
-        $booking->booking_status = 'Approved';
+        $booking->booking_status = 'Success';
         $booking->save();
 
         return redirect()->route('room.pending.booking', $booking->booking_id)->with('success', 'Booking approved successfully.');
@@ -51,7 +51,7 @@ class BookingController extends Controller
     public function roomApprovedBooking()
     {
         $bookings = Booking::with(['user', 'room'])
-            ->where('booking_status', 'Approved')
+            ->where('booking_status', 'Success')
             ->whereNotNull('room_id') //
             ->paginate(7);
 
@@ -115,12 +115,20 @@ class BookingController extends Controller
     public function cottageApproveBooking()
     {
         $bookings = Booking::with(['user', 'pool'])
-            ->where('booking_status', 'Approved')
+            ->where('booking_status', 'Success')
             ->whereNotNull('pool_id') //
             ->paginate(7);
 
         return view('bookings.cottages.view_approved_cottage', compact('bookings'));
     }
+
+    public function cottageDestroy($id)
+{
+    $booking = Booking::findOrFail($id);
+    $booking->delete();
+
+    return redirect()->route('cottage.approved.booking')->with('success', 'Cottage booking deleted successfully.');
+}
 
     public function cottageCancelBooking()
     {
@@ -153,12 +161,20 @@ class BookingController extends Controller
     public function activityApproveBooking()
     {
         $bookings = Booking::with(['user', 'activity'])
-            ->where('booking_status', 'Approved')
+            ->where('booking_status', 'Success')
             ->whereNotNull('activity_id') //
             ->paginate(7);
 
         return view('bookings.activity.view_approved_activity', compact('bookings'));
     }
+
+    public function activityDestroy($id)
+{
+    $booking = Booking::findOrFail($id);
+    $booking->delete();
+
+    return redirect()->route('activity.approved.booking')->with('success', 'Activity booking deleted successfully.');
+}
 
     public function activityApprovePayment($id)
     {
@@ -216,12 +232,20 @@ class BookingController extends Controller
     public function functionApproveBooking()
     {
         $bookings = Booking::with(['user', 'hall'])
-            ->where('booking_status', 'Approved')
+            ->where('booking_status', 'Success')
             ->whereNotNull('hall_id') //
             ->paginate(7);
 
         return view('bookings.function_hall.view_approved_function', compact('bookings'));
     }
+
+    public function functionDestroy($id)
+{
+    $booking = Booking::findOrFail($id);
+    $booking->delete();
+
+    return redirect()->route('function.approved.booking')->with('success', 'Function Hall booking deleted successfully.');
+}
 
     public function functionApprovePayment($id)
     {
@@ -291,22 +315,22 @@ class BookingController extends Controller
     //Overall
     public function approvedBookings()
     {
-        $bookings = Booking::where('payment_status', 'Fully Paid')
-            ->where('booking_status', 'Approved')
+        $bookings = Booking::where('payment_status', 'Partial')
+            ->where('booking_status', 'Success')
             ->with(['user', 'room', 'pool', 'activity', 'hall']) // Eager load relationships
             ->get();
 
         return view('bookings.approve_booking', ['bookings' => $bookings]);
     }
 
-    public function pendingBookings()
+    public function refundBookings()
     {
         $bookings = Booking::where(function ($query) {
             $query->where('payment_status', 'Partial')
-                ->where('booking_status', 'Pending')
+                ->where('booking_status', 'Success')
                 ->orWhere(function ($query) {
-                    $query->where('payment_status', 'Partial')
-                        ->where('booking_status', 'Approved');
+                    $query->where('payment_status', 'Refunded')
+                        ->where('booking_status', 'Success');
                 });
         })
             ->with(['user', 'room', 'pool', 'activity', 'hall']) // Eager load relationships
@@ -320,7 +344,7 @@ class BookingController extends Controller
     public function approvedBookingsReport()
     {
         // Fetch all approved bookings with relationships
-        $bookings = Booking::where('booking_status', 'Approved')
+        $bookings = Booking::where('booking_status', 'Success')
             ->with(['user', 'room', 'pool', 'activity', 'hall']) // Eager load relationships
             ->get();
 
@@ -343,12 +367,12 @@ class BookingController extends Controller
         $bookingTypes = [
             'room' => [
                 'relation' => 'room',
-                'route' => 'bookings.show', // Requires 'booking_id'
+                'route' => 'room.approved.payment', // Requires 'booking_id'
                 'params' => ['booking_id' => $booking->booking_id],
             ],
             'activity' => [
                 'relation' => 'activity',
-                'route' => 'approvedActivity.show', // Ensure this matches your route name
+                'route' => 'activity.approve.payment', // Ensure this matches your route name
                 'params' => ['booking_id' => $booking->booking_id],
             ],
             'functionHall' => [
@@ -400,5 +424,12 @@ class BookingController extends Controller
         }
     }
 
+    public function deleteApproved($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $booking->delete();
+
+        return redirect()->route('room.approved.booking')->with('success', 'Booking deleted successfully.');
+    }
 
 }

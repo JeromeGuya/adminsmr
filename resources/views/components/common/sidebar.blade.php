@@ -162,7 +162,6 @@
                     </button>
                     <ul x-cloak x-show="activeDropdown === 'rooms'" x-collapse class="sub-menu text-gray-500">
                         <li><a href="{{ route('room.approved.booking') }}">Approved</a></li>
-                        <li><a href="{{ route('room.pending.booking') }}">Pending</a></li>
                         <li><a href="{{ route('room.cancel.booking') }}">Cancelled</a></li>
                     </ul>
                 </li>
@@ -192,7 +191,6 @@
                     </button>
                     <ul x-cloak x-show="activeDropdown === 'cottages'" x-collapse class="sub-menu text-gray-500">
                         <li><a href="{{ route('cottage.approved.booking') }}">Approved</a></li>
-                        <li><a href="{{ route('cottage.pending.booking') }}">Pending</a></li>
                         <li><a href="{{ route('cottage.cancel.booking') }}">Cancelled</a></li>
                     </ul>
                 </li>
@@ -223,7 +221,7 @@
                     </button>
                     <ul x-cloak x-show="activeDropdown === 'activities'" x-collapse class="sub-menu text-gray-500">
                         <li><a href="{{ route('activity.approved.booking') }}">Approved</a></li>
-                        <li><a href="{{ route('activity.pending.booking') }}">Pending</a></li>
+
                         <li><a href="{{ route('activity.cancel.booking') }}">Cancelled</a></li>
                     </ul>
                 </li>
@@ -253,7 +251,7 @@
                     </button>
                     <ul x-cloak x-show="activeDropdown === 'function_hall'" x-collapse class="sub-menu text-gray-500">
                         <li><a href="{{ route('function.approved.booking') }}">Approved</a></li>
-                        <li><a href="{{ route('function.pending.booking') }}">Pending</a></li>
+
                         <li><a href="{{ route('function.cancel.booking') }}">Cancelled</a></li>
                     </ul>
                 </li>
@@ -293,9 +291,9 @@
                         </div>
                     </button>
                     <ul x-cloak x-show="activeDropdown === 'booking_report'" x-collapse class="sub-menu text-gray-500">
-                        <li><a href="{{ route('bookings.approved') }}">Approved</a></li>
-                        <li><a href="{{ route('bookings.pending') }}">Pending</a></li>
-                        <li><a href="/reports/bookings/cancelled">Cancelled</a></li>
+                        <li><a href="{{ route('bookings.approved') }}">Success</a></li>
+                        <li><a href="{{ route('bookings.refund') }}">Refund</a></li>
+
                     </ul>
                 </li>
 
@@ -359,6 +357,20 @@
                     </a>
                 </li>
 
+                <li class="menu nav-item">
+                    <a href="{{ route('announce.admin') }}" class="nav-link group w-full flex justify-between items-center">
+                        <div class="flex items-center">
+                            <!-- Feedbacks Icon -->
+                            <svg class="group-hover:!text-primary shrink-0" width="20" height="20" viewBox="0 0 24 24"
+                                 fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill="none" stroke="currentColor" stroke-width="2" d="M12 3L2 12h3v8h6v-5h2v5h6v-8h3L12 3z" />
+                                <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+                            </svg>
+                            <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Announcements</span>
+                        </div>
+                    </a>
+                </li>
 
             </ul>
         </div>

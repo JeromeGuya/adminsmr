@@ -4,7 +4,7 @@
             <!-- Header Section -->
             <div class="flex flex-col sm:flex-row items-center justify-between mb-6">
                 <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4 sm:mb-0">
-                    Approved Bookings Report
+                    Success Bookings Report
                 </h1>
                 <!-- Button to Download Report -->
                 <a href="{{ route('approvedBookingsExport') }}" class="btn bg-green-500 text-white px-4 py-2 rounded">

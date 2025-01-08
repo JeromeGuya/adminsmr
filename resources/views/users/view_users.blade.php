@@ -95,7 +95,7 @@
             </div>
             <div class="flex justify-between items-center mt-6">
             <span class="text-sm text-gray-700">
-                Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} Rooms
+                Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} Users
             </span>
                 <div>
                     {{ $users->links() }}

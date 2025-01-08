@@ -30,9 +30,9 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/employee', [EmployeeController::class, 'index'])->name('employees.index');
     Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employees.create');
     Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employees.store');
-    Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
-    Route::get('/employee/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
-    Route::put('/employee/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
+    Route::delete('/employee/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+    Route::get('/employee/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+    Route::put('/employee/{id}', [EmployeeController::class, 'update'])->name('employees.update');
 
 
     //Rooms
@@ -42,6 +42,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
     Route::delete('/rooms/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy');
     Route::put('/rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
+
 
     //Activity
     Route::get('/activity', [ActivityController::class, 'index'])->name('activity.index');
@@ -76,6 +77,8 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/bookings/room/{booking_id}/edit', [BookingController::class, 'roomBookingEdit'])->name('room.booking.edit');
     Route::put('/bookings/room/{booking_id}/approve', [BookingController::class, 'roomBookingApprove'])->name('room.booking.approve');
     Route::get('/booking/room/canceled', [BookingController::class, 'roomCancelBooking'])->name('room.cancel.booking');
+    Route::delete('booking/room/approved/{id}', [BookingController::class, 'deleteApproved'])->name('room.approved.delete');
+
 
     //Cottage Bookings
     Route::get('/booking/cottage/approved', [BookingController::class, 'cottageApproveBooking'])->name('cottage.approved.booking');
@@ -85,6 +88,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/booking/cottage/pending/{booking_id}', [BookingController::class, 'cottagePendingShow'])->name('cottage.pending.show');
     Route::put('/booking/cottage/{booking_id}/approve', [BookingController::class, 'cottageBookingApprove'])->name('cottage.booking.approve');
     Route::get('/booking/cottage/canceled', [BookingController::class, 'cottageCancelBooking'])->name('cottage.cancel.booking');
+    Route::delete('booking/cottages/{id}', [BookingController::class, 'cottageDestroy'])->name('cottages.destroy.booking');
 
     //Activity Bookings
     Route::get('/booking/activity/approved', [BookingController::class, 'activityApproveBooking'])->name('activity.approved.booking');
@@ -94,6 +98,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/booking/activity/pending/{booking_id}', [BookingController::class, 'activityPendingShow'])->name('activity.pending.show');
     Route::put('/booking/activity/{booking_id}/approve', [BookingController::class, 'activityBookingApprove'])->name('activity.booking.approve');
     Route::get('/booking/activity/canceled', [BookingController::class, 'activityCancelBooking'])->name('activity.cancel.booking');
+    Route::delete('booking/activity/{id}', [BookingController::class, 'activityDestroy'])->name('activity.destroy.booking');
 
     //Function Hall
     Route::get('/booking/function_hall/approved', [BookingController::class, 'functionApproveBooking'])->name('function.approved.booking');
@@ -103,13 +108,14 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/booking/function_hall/pending/{booking_id}', [BookingController::class, 'functionPendingShow'])->name('function.pending.show');
     Route::put('/booking/function_hall/{booking_id}/approve', [BookingController::class, 'functionBookingApprove'])->name('function.booking.approve');
     Route::get('/booking/function_hall/canceled', [BookingController::class, 'functionCancelBooking'])->name('function.cancel.booking');
+    Route::delete('booking/function_hall/{id}', [BookingController::class, 'functionDestroy'])->name('function.destroy.booking');
 
     //Delete All Bookings
     Route::delete('/booking/{booking_id}', [BookingController::class, 'destroy'])->name('booking.destroy');
 
     //OverAll
     Route::get('/bookings/approved', [BookingController::class, 'approvedBookings'])->name('bookings.approved');
-    Route::get('/bookings/pending', [BookingController::class, 'pendingBookings'])->name('bookings.pending');
+    Route::get('/bookings/refund', [BookingController::class, 'refundBookings'])->name('bookings.refund');
 
     //Reports
     Route::get('/approved-bookings-report', [BookingController::class, 'approvedBookingsReport'])->name('approvedBookingsReport');
@@ -126,9 +132,11 @@ Route::middleware('auth:admin')->group(function () {
     //Notif
     Route::get('/notifications', [AdminController::class, 'getNotifications']);
 
+    Route::get('/announcement', [AdminController::class, 'announcementIndex'])->name('announce.admin');
+    Route::post('/announcement', [AdminController::class, 'announcementStore'])->name('announcements.store');
+
 });
 
 
 Route::view('/', 'index')->name('login');
 Route::post('/login', [AdminController::class, 'store']);
-

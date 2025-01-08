@@ -34,11 +34,11 @@
                                 {{ \Carbon\Carbon::parse($employees->created_at)->format('F j, Y, g:i a') }}
                             </td>
                             <td class="px-6 py-4 flex space-x-4">
-                                <a href="{{ route('employees.edit', $employees->employee_id) }}"
+                                <a href="{{ route('employees.edit', $employees->id) }}"
                                    class="text-blue-600 hover:underline dark:text-blue-400">Edit</a>
                                 <button type="button" class="text-red-600 hover:underline dark:text-red-400"
-                                        data-modal-toggle="deleteEmployeeModal-{{ $employees->employee_id }}"
-                                        data-modal-target="deleteEmployeeModal-{{ $employees->employee_id }}">
+                                        data-modal-toggle="deleteEmployeeModal-{{ $employees->id }}"
+                                        data-modal-target="deleteEmployeeModal-{{ $employees->id }}">
                                     Delete
                                 </button>
 
@@ -70,7 +70,7 @@
                                                     cannot be undone.
                                                 </p>
                                                 <div class="mt-4 flex justify-end space-x-4">
-                                                    <form action="{{ route('employees.destroy', $employees->employee_id) }}"
+                                                    <form action="{{ route('employees.destroy', $employees->id) }}"
                                                           method="POST">
                                                         @csrf
                                                         @method('DELETE')

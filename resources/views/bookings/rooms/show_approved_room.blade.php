@@ -63,7 +63,7 @@
 
                 <!-- Actions -->
                 <div class="mt-6 flex flex-wrap justify-end space-x-2">
-                    @if ($booking->booking_status !== 'Approved' || $booking->payment_status !== 'Fully Paid')
+                    @if ($booking->booking_status !== 'Success' || $booking->payment_status !== 'Fully Paid')
                         <!-- Approve Button -->
                         <button
                             data-modal-target="approveModal"

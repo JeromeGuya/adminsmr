@@ -5,7 +5,7 @@
             <!-- Header Section -->
             <div class="flex flex-col sm:flex-row items-center justify-between mb-6">
                 <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4 sm:mb-0">
-                    Pending Bookings
+                    Refunded Bookings
                 </h1>
             </div>
 
@@ -13,7 +13,7 @@
             @if ($bookings->isEmpty())
                 <div class="bg-white rounded-lg shadow dark:bg-gray-800 p-6 text-center">
                     <p class="text-gray-700 dark:text-gray-300">
-                        No pending bookings found.
+                        No refund bookings found.
                     </p>
                 </div>
             @else
@@ -28,27 +28,23 @@
                             </th>
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                                Date Created
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
                                 Booking Type
                             </th>
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                                Customer Name
+                                User
                             </th>
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                                Payment Status
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                                Booking Status
+                                Status
                             </th>
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
                                 Down Payment
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                                Balance Due
                             </th>
                         </tr>
                         </thead>
@@ -57,6 +53,9 @@
                             <tr>
                                 <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
                                     {{ $booking->booking_id }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
+                                    {{ $booking->created_at->format('Y-m-d') }}
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
                                     @if ($booking->room)
@@ -78,7 +77,9 @@
                                     <span class="
                                         @if ($booking->payment_status == 'Partial' || $booking->payment_status == 'Pending')
                                             text-orange-500
-                                        @elseif ($booking->payment_status == 'Approved')
+                                        @elseif ($booking->payment_status == 'Approved' || $booking->payment_status == 'Fully Paid')
+                                            text-green-500
+                                        @elseif ($booking->payment_status == 'Refunded')
                                             text-green-500
                                         @endif
                                     ">
@@ -86,26 +87,21 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
-                                    <span class="
-                                        @if ($booking->booking_status == 'Pending')
-                                            text-orange-500
-                                        @elseif ($booking->booking_status == 'Approved')
-                                            text-green-500
-                                        @endif
-                                    ">
-                                        {{ $booking->booking_status }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
                                     PHP {{ number_format($booking->down_payment, 2) }}
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
-                                    PHP {{ number_format($booking->balance_due, 2) }}
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
-
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-right font-semibold text-gray-900 dark:text-gray-300">
+                                    Total Refund:
+                                </td>
+                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-gray-300">
+                                    PHP {{ number_format($bookings->sum('down_payment'), 2) }}
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             @endif
