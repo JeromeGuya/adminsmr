@@ -9,7 +9,7 @@
             <!-- Card -->
             <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg dark:bg-gray-800">
                 <h2 class="text-2xl font-bold text-center text-gray-900 dark:text-white">
-                    SMR, Admin Login
+                    SMR Admin Login
                 </h2>
 
                 @if ($errors->any())
