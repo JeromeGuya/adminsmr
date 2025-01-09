@@ -26,10 +26,7 @@
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
                                 Booking ID
                             </th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                                Date Created
-                            </th>
+
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
                                 Booking Type
@@ -54,9 +51,7 @@
                                 <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
                                     {{ $booking->booking_id }}
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
-                                    {{ $booking->created_at->format('Y-m-d') }}
-                                </td>
+
                                 <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
                                     @if ($booking->room)
                                         Room: {{ $booking->room->room_type }}
