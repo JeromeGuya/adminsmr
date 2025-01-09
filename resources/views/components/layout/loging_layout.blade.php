@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ecolodge - Admin</title>
 
-    @vite(['resources/js/app.js', 'resources/css/app.css'])
+
+    @vite(['resources/css/app.css'])
 
 </head>
 <body>
