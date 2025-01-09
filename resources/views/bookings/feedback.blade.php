@@ -21,9 +21,7 @@
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                                Booking ID
-                            </th>
+
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
                                 Customer Name
                             </th>
@@ -38,9 +36,7 @@
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         @foreach ($feedbacks as $feedback)
                             <tr>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
-                                    {{ $feedback->booking->id ?? 'Unknown' }}
-                                </td>
+
                                 <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
                                     {{ $feedback->user->first_name ?? 'Unknown' }}
                                 </td>

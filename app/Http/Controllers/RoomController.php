@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Booking;
+use App\Mail\RefundConfirmation;
 
 class RoomController extends Controller
 {
@@ -21,6 +24,34 @@ class RoomController extends Controller
     public function create()
     {
         return view('rooms.add_rooms');
+    }
+
+    public function refundRoom($id)
+    {
+        $booking = Booking::with(['user', 'room'])->findOrFail($id);
+
+        // Update payment status to 'Refunded'
+        $booking->payment_status = 'Refunded';
+        $booking->save();
+
+        // Send refund confirmation email
+        Mail::to($booking->user->email)->send(new RefundConfirmation($booking));
+
+        return redirect()->back()->with('success', '50% refund has been processed and an email has been sent to the user.');
+    }
+
+    public function cancelRoomsShow($id)
+    {
+        $booking = Booking::with(['user', 'room'])->findOrFail($id);
+
+        return view('rooms.rooms_view_cancelled', compact('booking'));
+    }
+
+    public function cancelRoomShow($id)
+    {
+        $booking = Booking::with(['user', 'room'])->findOrFail($id);
+
+        return view('rooms.rooms_view_canceled', compact('booking'));
     }
 
     /**

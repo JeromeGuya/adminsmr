@@ -18,6 +18,8 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'adminDashboard'] )->name('admin.dashboard');
     Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
 
+      Route::delete('/bookings/{id}/refund', [RoomController::class, 'refundRoom'])->name('bookings.refund');
+
     //Users
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');

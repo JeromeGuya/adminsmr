@@ -49,17 +49,7 @@
                         </button>
                     </div>
                     <!-- Remember Me and Forgot Password -->
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input id="remember" name="remember" type="checkbox"
-                                   class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="remember" class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Remember me
-                            </label>
-                        </div>
-                        <a href="#" class="text-sm text-blue-600 hover:underline dark:text-blue-400">Forgot
-                            Password?</a>
-                    </div>
+
                     <!-- Submit Button -->
                     <button type="submit"
                             class="w-full px-4 py-3 text-base font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600">

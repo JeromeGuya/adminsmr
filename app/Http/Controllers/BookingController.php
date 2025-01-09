@@ -12,6 +12,32 @@ use Illuminate\Support\Facades\Mail;
 class BookingController extends Controller
 {
 
+    public function destroybook(Booking $booking)
+    {
+        try {
+            // Delete the booking
+            $booking->delete();
+
+            // Check the booking type and redirect accordingly
+            if ($booking->room) {
+                return redirect('/rooms/canceled')->with('success', 'Room booking deleted successfully.');
+            } elseif ($booking->activity) {
+                return redirect('/activity/canceled')->with('success', 'Activity booking deleted successfully.');
+            } elseif ($booking->hall) {
+                return redirect('/function-halls/approved')->with('success', 'Function hall booking deleted successfully.');
+            } elseif ($booking->pool) {
+                return redirect('/cottage/canceled')->with('success', 'Pool booking deleted successfully.');
+            } else {
+                return redirect('/dashboard')->with('success', 'Booking deleted successfully.');
+            }
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            \Log::error('Booking Deletion Error: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Failed to delete the booking.');
+        }
+    }
+
     //Room Controller
     public function roomPendingBooking()
     {
@@ -77,7 +103,8 @@ class BookingController extends Controller
     public function roomCancelBooking()
     {
         $bookings = Booking::with(['user', 'room'])
-            ->where('booking_status', 'Declined')
+            ->where('booking_status', 'Cancelled')
+            ->whereIn('payment_status', ['Refund', 'Refunded'])
             ->whereNotNull('room_id') //
             ->paginate(7);
 
@@ -133,7 +160,8 @@ class BookingController extends Controller
     public function cottageCancelBooking()
     {
         $bookings = Booking::with(['user', 'pool'])
-            ->where('booking_status', 'Declined')
+            ->where('booking_status', 'Cancelled')
+            ->whereIn('payment_status', ['Refund', 'Refunded'])
             ->whereNotNull('pool_id') //
             ->paginate(7);
 
@@ -221,7 +249,8 @@ class BookingController extends Controller
     public function activityCancelBooking()
     {
         $bookings = Booking::with(['user', 'activity'])
-            ->where('booking_status', 'Declined')
+            ->where('booking_status', 'Cancelled')
+            ->whereIn('payment_status', ['Refund', 'Refunded'])
             ->whereNotNull('activity_id') //
             ->paginate(7);
 
@@ -292,7 +321,8 @@ class BookingController extends Controller
     public function functionCancelBooking()
     {
         $bookings = Booking::with(['user', 'hall'])
-            ->where('booking_status', 'Declined')
+            ->where('booking_status', 'Cancelled')
+            ->whereIn('payment_status', ['Refund', 'Refunded'])
             ->whereNotNull('hall_id') //
             ->paginate(7);
 
