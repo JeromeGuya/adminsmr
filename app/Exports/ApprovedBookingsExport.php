@@ -3,57 +3,70 @@
 namespace App\Exports;
 
 use App\Models\Booking;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Response;
 
-class ApprovedBookingsExport implements FromCollection, WithHeadings, WithMapping
+class ApprovedBookingsExport implements FromView, ShouldAutoSize, WithStyles
 {
     /**
-     * @return \Illuminate\Support\Collection
+     * @return View
      */
-    public function collection()
+    public function view(): View
     {
-        return Booking::where('booking_status', 'Approved')->get(); // Fetch approved bookings
+        $bookings = Booking::where('booking_status', 'Success')->get();
+
+        return view('exports.approved_bookings', [
+            'bookings' => $bookings
+        ]);
     }
 
     /**
-     * @return array
+     * @param Worksheet $sheet
      */
-    public function headings(): array
+    public function styles(Worksheet $sheet)
     {
         return [
-            'Booking ID',
-            'Booking Type',
-            'Customer Name',
-            'Payment Status',
-            'Booking Status',
-            'Check-in Date',
-            'Check-out Date',
-            'Payment Method',
-            'Total Amount',
+            // Style the first row (header)
+            1 => [
+                'font' => ['bold' => true, 'size' => 12],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => ['argb' => 'FFCCCCCC'],
+                ],
+            ],
+            // Set borders for all cells
+            'A1:I'.$sheet->getHighestRow() => [
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        'color' => ['argb' => 'FF000000'],
+                    ],
+                ],
+            ],
         ];
     }
 
     /**
-     * @param Booking $booking
-     * @return array
+     * Generate PDF for approved bookings
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function map($booking): array
+    public function download()
     {
-        return [
-            $booking->booking_id,
-            $booking->room ? 'Room: ' . $booking->room->room_type :
-                ($booking->pool ? 'Pool: ' . $booking->pool->cottage_name :
-                    ($booking->activity ? 'Activity: ' . $booking->activity->activity_name :
-                        ($booking->hall ? 'Hall: ' . $booking->hall->hall_name : 'N/A'))),
-            $booking->user->first_name ?? 'Unknown',
-            $booking->payment_status,
-            $booking->booking_status,
-            $booking->check_in->format('M d, Y'),
-            $booking->check_out->format('M d, Y'),
-            $booking->payment_method ?? 'N/A',
-            $booking->total_amount,
-        ];
+        $bookings = Booking::where('booking_status', 'Success')->get();
+
+        $pdf = PDF::loadView('exports.approved_bookings_pdf', [
+            'bookings' => $bookings
+        ]);
+
+        // Set paper size and orientation for the PDF
+        $pdf->setPaper('a4', 'landscape');
+
+        return $pdf->download('approved-bookings.pdf');
     }
 }

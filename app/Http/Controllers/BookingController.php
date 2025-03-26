@@ -345,7 +345,7 @@ class BookingController extends Controller
     //Overall
     public function approvedBookings()
     {
-        $bookings = Booking::where('payment_status', 'Partial')
+        $bookings = Booking::where('payment_status', 'Fully Paid')
             ->where('booking_status', 'Success')
             ->with(['user', 'room', 'pool', 'activity', 'hall']) // Eager load relationships
             ->get();

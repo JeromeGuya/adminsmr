@@ -12,6 +12,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\ReportController;
 
 
 Route::middleware('auth:admin')->group(function () {
@@ -121,9 +122,7 @@ Route::middleware('auth:admin')->group(function () {
 
     //Reports
     Route::get('/approved-bookings-report', [BookingController::class, 'approvedBookingsReport'])->name('approvedBookingsReport');
-    Route::get('approved-bookings-export', function () {
-        return Excel::download(new ApprovedBookingsExport, 'approved_bookings.xlsx');
-    })->name('approvedBookingsExport');
+    Route::get('approved-bookings-export', [ReportController::class, 'downloadApprovedReport'])->name('approvedBookingsExport');
 
     //Email
     Route::post('/email/{id}/email', [BookingController::class, 'sendEmail'])->name('bookings.email');
